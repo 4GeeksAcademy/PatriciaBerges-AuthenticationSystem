@@ -1,3 +1,42 @@
 /* 
     General Styles used on every website (Don't Repeat Yourself)
 */
+.formularyBox{
+    width: 500px;
+    height: 300px;
+    box-shadow: 0 10px 10px 0 black;
+    border: solid black 1px;
+    margin-top: 200px;
+}
+
+.formularyInput{
+    width: 80%;
+    height: auto;
+}
+
+.inputBox{
+    width: 80%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+h3{
+    margin:auto;
+    width: 150px;
+    margin-top: 10px;
+}
+
+.link{
+    margin: 0px 0 10px 50px
+}
+
+.private{
+    width: 90%;
+    margin-top: 20%;
+    margin-left: 45px
+}
+
+.button{
+    width: 100px;
+    margin-left: 50px;
+}
