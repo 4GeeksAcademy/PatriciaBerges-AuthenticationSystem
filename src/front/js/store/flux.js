@@ -1,24 +1,12 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			message: "Hello World"
+			message: "Hello World",
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
-			getMessage: async () => {
-				try{
-					// fetching data from the backend
-					const resp = await fetch(process.env.BACKEND_URL + "/api/hello")
-					const data = await resp.json()
-					setStore({ message: data.message })
-					// don't forget to return something, that is how the async resolves
-					return data;
-				}catch(error){
-					console.log("Error loading message from backend", error)
-				}
-			},
 			login: async (email, password) => {
-				const resp = await fetch(`https://paranormal-spooky-apparition-x599w9g9756jc9q6r-3001.app.github.dev/login`, { 
+				const resp = await fetch(process.env.BACKEND_URL + `/api/login`, { 
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ email, password })
@@ -36,8 +24,44 @@ const getState = ({ getStore, getActions, setStore }) => {
 				// También deberías almacenar el usuario en la store utilizando la función setItem
 				localStorage.setItem("jwt-token", data.token);
 				return data
-		}
-		}
+			},
+			privatePage: async () => {
+				// Recupera el token desde la localStorage
+				const token = localStorage.getItem('jwt-token');
+		
+				const resp = await fetch(process.env.BACKEND_URL + `/api/protected`, {
+				method: 'GET',
+				headers: { 
+					"Content-Type": "application/json",
+					'Authorization': 'Bearer ' + token // ⬅⬅⬅ authorization token
+				} 
+				});
+		
+				if(!resp.ok) {
+					if(resp.status === 403) {
+						throw Error("Missing or invalid token");
+					} else {
+						throw Error("There was a problem in the request");
+					}
+				}
+				const data = await resp.json();
+				console.log("This is the data you requested", data);
+				return data
+			},
+			signup: async (email, password) => {
+				const resp = await fetch(process.env.BACKEND_URL + `/api/signup`, {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ email, password })
+				})
+				if(resp.status === 401){
+					throw new Error ("Email already in use")
+				}
+				if(!resp.ok) throw new Error("There was a problem in the sign up request")
+				const data = await resp.json()
+				return data
+			}
+	}
 	};
 };
 

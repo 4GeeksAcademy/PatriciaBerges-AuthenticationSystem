@@ -21,10 +21,11 @@ static_file_dir = os.path.join(os.path.dirname(
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
+CORS(app, resources={r"/*": {"origins": "https://paranormal-spooky-apparition-x599w9g9756jc9q6r-3000.app.github.dev"}}, supports_credentials=True)
+
 app.config["JWT_SECRET_KEY"] = "super-secret" 
 jwt = JWTManager(app)
 
-CORS(app, resources={r"/*": {"origins": "https://paranormal-spooky-apparition-x599w9g9756jc9q6r-3000.app.github.dev"}})
 
 # database condiguration
 db_url = os.getenv("DATABASE_URL")

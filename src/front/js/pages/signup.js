@@ -9,6 +9,12 @@ export const SignUp = () => {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
+    const handleSignUp = (email, password) => {
+        if(email && password){
+            actions.signup(email, password)
+            
+        }
+    }
     
 
     return (
@@ -22,7 +28,7 @@ export const SignUp = () => {
                 <label htmlFor="password">Enter password</label>
                 <input type="password" id="password" name="password" className="formularyInput form-control" onChange={(e) => setPassword(e.target.value)}></input>
              </div>
-             <button className="btn btn-primary button">
+             <button className="btn btn-primary button" onClick={handleSignUp}>
                 Sign Up
              </button>
              <Link to="/" className="link">

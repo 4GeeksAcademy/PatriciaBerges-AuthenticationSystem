@@ -2,17 +2,21 @@ import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
     const { store, actions } = useContext(Context);
+    const navigate = useNavigate()
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
     const handleLogIn = (email, password) => {
-        console.log(email, password)
         if(email && password){
             actions.login(email, password)
+            .then(() => {
+                navigate("/private")
+            })
         }
     }
 

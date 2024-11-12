@@ -9,8 +9,6 @@ from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identi
 
 api = Blueprint('api', __name__)
 
-# Allow CORS requests to this API
-CORS(api, resources={r"/*": {"origins": "https://paranormal-spooky-apparition-x599w9g9756jc9q6r-3000.app.github.dev"}})
 
 @api.route("/login", methods=["POST"])
 def create_token():
@@ -28,3 +26,15 @@ def protected():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
     return jsonify({"id": user.id, "email": user.email }), 200
+
+@api.route("/signup", methods=["POST"])
+def create_user():
+    email = request.json.get("email")
+    password = request.json.get("password")
+    user = User.query.filter_by(email=email).first()
+    if user is not None:
+        return jsonify({"error": "The email is already in use"}), 401
+    new_user = User(email=email, password=password, is_active=True)
+    db.session.add(new_user)
+    db.session.commit
+    return jsonify({"id": new_user.id, "email": new_user.email}), 201
