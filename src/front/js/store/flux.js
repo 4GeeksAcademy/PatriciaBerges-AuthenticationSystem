@@ -38,14 +38,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 				});
 		
 				if(!resp.ok) {
-					if(resp.status === 403) {
+					if(resp.status === 422){
+						throw Error("You must be logged in to access this page")
+					}
+					else if(resp.status === 403) {
 						throw Error("Missing or invalid token");
 					} else {
 						throw Error("There was a problem in the request");
 					}
 				}
 				const data = await resp.json();
-				console.log("This is the data you requested", data);
 				return data
 			},
 			signup: async (email, password) => {

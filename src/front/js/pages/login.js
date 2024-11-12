@@ -10,13 +10,18 @@ export const Login = () => {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
+    const [error, setError] = useState("")
 
-    const handleLogIn = (email, password) => {
+    const handleLogIn = async (email, password) => {
         if(email && password){
-            actions.login(email, password)
+            try
+            {await actions.login(email, password)
             .then(() => {
                 navigate("/private")
-            })
+            })}
+            catch (e) {
+                setError(e.message)
+            }
         }
     }
 
@@ -37,6 +42,7 @@ export const Login = () => {
              <Link to="/signup" className="link">
                 New? Sign up here
              </Link>
+             {error && <div className="alert alert-danger mt-3">{error}</div>}
         </div>
     )
 }

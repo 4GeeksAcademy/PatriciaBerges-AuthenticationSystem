@@ -36,5 +36,5 @@ def create_user():
         return jsonify({"error": "The email is already in use"}), 401
     new_user = User(email=email, password=password, is_active=True)
     db.session.add(new_user)
-    db.session.commit
+    db.session.commit()
     return jsonify({"id": new_user.id, "email": new_user.email}), 201
